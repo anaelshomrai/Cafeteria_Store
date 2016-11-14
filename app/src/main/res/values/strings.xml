@@ -1,11 +1,8 @@
 <resources>
     <string name="app_name">Time2eaT</string>
 
-    <!--Login Activity-->
-    <string name="loginBtnText">Login</string>
-    <string name="signup_text">No account yet? Create one</string>
-    <string name="login_error">Wrong Login details</string>
-    <string name="hint_email">Email</string>
-    <string name="hint_password">Password</string>
-    <!--Login Activity End-->
+    <!--Inventory Activity-->
+    <string name="toggle_btn_text_on">In Stock</string>
+    <string name="toggle_btn_text_off">Not in Stock</string>
+    <!--Inventory Activity End-->
 </resources>

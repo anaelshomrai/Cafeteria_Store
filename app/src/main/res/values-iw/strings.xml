@@ -3,12 +3,9 @@
     <string name="app_name">Time2eaT</string>
 
 
-    <!--Login Activity-->
-    <string name="loginBtnText">התחבר</string>
-    <string name="signup_text">אין לך חשבון עדיין? הירשם</string>
-    <string name="login_error">פרטי התחברות שגויים</string>
-    <string name="hint_email">דוא"ל</string>
-    <string name="hint_password">סיסמה</string>
-    <!--Login Activity End-->
+    <!--Inventory Activity-->
+    <string name="toggle_btn_text_on">במלאי</string>
+    <string name="toggle_btn_text_off">חסר במלאי</string>
+    <!--Inventory Activity End-->
 
 </resources>
