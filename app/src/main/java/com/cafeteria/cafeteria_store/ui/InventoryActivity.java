@@ -10,12 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.cafeteria.cafeteria_store.R;
 import com.cafeteria.cafeteria_store.data.Extra;
+import com.cafeteria.cafeteria_store.data.InventoryItem;
 import com.cafeteria.cafeteria_store.data.Item;
 import com.cafeteria.cafeteria_store.data.Main;
 import com.cafeteria.cafeteria_store.utils.ApplicationConstant;
@@ -23,9 +26,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +50,8 @@ public class InventoryActivity extends AppCompatActivity implements SearchView.O
     private SearchView searchView;
     private InventoryAdapter inventoryAdapter;
     private List<InventoryItem> backup;
+    private String urlRequest;
+    private String json;
 
 
     @Override
@@ -110,14 +119,13 @@ public class InventoryActivity extends AppCompatActivity implements SearchView.O
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             ViewHolder holder;
-            InventoryItem inventoryItem = (InventoryItem) getItem(position);
+            final InventoryItem inventoryItem = (InventoryItem) getItem(position);
 
             if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 convertView = inflater.inflate(layout, parent, false);
                 holder = new ViewHolder();
                 holder.toggleBtn = (ToggleButton) convertView.findViewById(R.id.toggleBtn);
-
                 holder.tvItemName = (TextView) convertView.findViewById(R.id.tvItemName);
                 convertView.setTag(holder);
 
@@ -125,8 +133,57 @@ public class InventoryActivity extends AppCompatActivity implements SearchView.O
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            holder.toggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Gson gson = new Gson();
 
-            holder.tvItemName.setText(inventoryItem.title);
+                    if (isChecked){ // on stock
+                        if (inventoryItem.getClass() == Item.class){
+                            Item toUpdate = (Item) inventoryItem;
+                            toUpdate.setInStock(true);
+                            urlRequest = ApplicationConstant.UPDATE_ITEM_URL;
+                            json = gson.toJson(toUpdate, Item.class);
+
+                        }else if(inventoryItem.getClass() == Extra.class){
+                            Extra toUpdate = (Extra) inventoryItem;
+                            toUpdate.setInStock(true);
+                            urlRequest = ApplicationConstant.UPDATE_EXTRA_URL;
+                            json = gson.toJson(toUpdate, Extra.class);
+
+                        }else if(inventoryItem.getClass() == Main.class){
+                            Main toUpdate = (Main) inventoryItem;
+                            toUpdate.setInStock(true);
+                            urlRequest = ApplicationConstant.UPDATE_MAIN_URL;
+                            json = gson.toJson(toUpdate, Main.class);
+                        }
+
+                    }else{ // not in stock
+                        if (inventoryItem.getClass() == Item.class){
+                            Item toUpdate = (Item) inventoryItem;
+                            toUpdate.setInStock(false);
+                            urlRequest = ApplicationConstant.UPDATE_ITEM_URL;
+                            json = gson.toJson(toUpdate, Item.class);
+
+                        }else if(inventoryItem.getClass() == Extra.class){
+                            Extra toUpdate = (Extra) inventoryItem;
+                            toUpdate.setInStock(false);
+                            urlRequest = ApplicationConstant.UPDATE_EXTRA_URL;
+                            json = gson.toJson(toUpdate, Extra.class);
+
+                        }else if(inventoryItem.getClass() == Main.class){
+                            Main toUpdate = (Main) inventoryItem;
+                            toUpdate.setInStock(false);
+                            urlRequest = ApplicationConstant.UPDATE_MAIN_URL;
+                            json = gson.toJson(toUpdate, Main.class);
+                        }
+                    }
+
+                    new UpdateInventoryTask().execute();
+
+                }
+            });
+            holder.tvItemName.setText(inventoryItem.getTitle());
             return convertView;
         }
 
@@ -143,19 +200,13 @@ public class InventoryActivity extends AppCompatActivity implements SearchView.O
                 inventoryItems.addAll(backup);
             } else {
                 for (InventoryItem it : backup) {
-                    if (it.title.toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (it.getTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
                         inventoryItems.add(it);
                     }
                 }
             }
             notifyDataSetChanged();
         }
-
-    }
-
-    private class InventoryItem{
-        int id;
-        String title;
 
     }
 
@@ -296,34 +347,97 @@ public class InventoryActivity extends AppCompatActivity implements SearchView.O
     }
 
     private void setInventory(){
-        InventoryItem inventoryItem;
+        InventoryItem it;
 
         for (Item item: items){
-            inventoryItem = new InventoryItem();
-            inventoryItem.id = item.getId();
-            inventoryItem.title = item.getTitle();
-
-            inventoryItems.add(inventoryItem);
-
+            it = new Item();
+            it.setTitle(item.getTitle());
+            it.setId(item.getId());
+            inventoryItems.add(it);
         }
 
         for (Extra extra: extras){
-            inventoryItem = new InventoryItem();
-            inventoryItem.id = extra.getId();
-            inventoryItem.title = extra.getTitle();
+            it = new Extra();
+            it.setTitle(extra.getTitle());
+            it.setId(extra.getId());
 
-            inventoryItems.add(inventoryItem);
+            inventoryItems.add(extra);
         }
 
         for (Main main: mains){
-            inventoryItem = new InventoryItem();
-            inventoryItem.id = main.getId();
-            inventoryItem.title = main.getTitle();
+            it = new Main();
+            it.setTitle(main.getTitle());
+            it.setId(main.getId());
 
-            inventoryItems.add(inventoryItem);
+            inventoryItems.add(main);
         }
 
         backup.addAll(inventoryItems);
         lvInventory.setAdapter(inventoryAdapter);
+    }
+
+    private class UpdateInventoryTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            boolean result = false;
+
+            URL url = null;
+            try {
+                url = new URL(urlRequest);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                con.setRequestProperty("Content-Type", "text/plain");
+                con.setRequestProperty("Accept", "text/plain");
+                con.setRequestMethod("POST");
+
+                OutputStream os = con.getOutputStream();
+                os.write(json.getBytes("UTF-8"));
+                os.flush();
+
+                if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return null;
+                }
+
+                // Response
+                StringBuilder response = new StringBuilder();
+                BufferedReader input = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+
+                String line;
+                while ((line = input.readLine()) != null) {
+                    response.append(line + "\n");
+                }
+
+                input.close();
+
+                con.disconnect();
+
+                if (response.toString().trim().equals("OK")) {
+                    result = true;
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            Toast.makeText(InventoryActivity.this, "Action completed", Toast.LENGTH_SHORT).show();
+
+        }
     }
 }
