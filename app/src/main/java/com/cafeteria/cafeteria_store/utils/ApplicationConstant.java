@@ -44,6 +44,8 @@ public class ApplicationConstant {
             "/rest/data/getExtras";
     public static final String GET_ITEMS_URL = "http://" + SERVER_IP +
             "/rest/data/getItems";
+    public static final String GET_SERVINGS_URL = "http://" + SERVER_IP +
+            "/rest/data/getServings";
 
     public static final String UPDATE_ITEM_URL = "http://" + SERVER_IP +
             "/rest/data/updateItem";
@@ -51,5 +53,7 @@ public class ApplicationConstant {
             "/rest/data/updateExtra";
     public static final String UPDATE_MAIN_URL = "http://" + SERVER_IP +
             "/rest/data/updateMain";
+    public static final String UPDATE_SERVINGS_URL = "http://" + SERVER_IP +
+            "/rest/data/updateServing";
 }
 

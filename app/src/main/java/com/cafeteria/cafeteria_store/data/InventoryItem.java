@@ -8,7 +8,10 @@ public interface InventoryItem {
 
     int getId();
     String getTitle();
+    boolean isInStock();
 
     void setId(int id);
     void setTitle(String title);
+    void setInStock(boolean inStock);
+
 }
