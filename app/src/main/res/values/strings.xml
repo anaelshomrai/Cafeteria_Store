@@ -5,4 +5,26 @@
     <string name="toggle_btn_text_on">In Stock</string>
     <string name="toggle_btn_text_off">Not in Stock</string>
     <!--Inventory Activity End-->
+
+    <!--Orders Activity-->
+    <string name="orders_activity_title">Orders</string>
+    <string name="mark_as_ready_action">Mark as ready</string>
+    <string name="mark_as_delivered_action">Mark as delivered</string>
+    <string name="order_ready">Ready!</string>
+    <!--Orders Activity End-->
+
+    <!--Order Details Popup-->
+    <string name="details_popup_title">Details of order number -</string>
+    <string name="custome_name_title">Customer Name:</string>
+    <string name="time_title">Time:</string>
+    <string name="item_title">Item Title:</string>
+    <string name="item_price">Price:</string>
+    <string name="time_not_specified">Not Specified</string>
+    <string name="meal_title">Meal Title:</string>
+    <string name="comment_title">Customer Comment :</string>
+    <string name="items_title">Items:</string>
+    <string name="meals_title">Meals:</string>
+    <!--Order Details Popup End-->
+
+    <string name="star">&#9733;</string>
 </resources>

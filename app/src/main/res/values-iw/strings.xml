@@ -8,4 +8,24 @@
     <string name="toggle_btn_text_off">חסר במלאי</string>
     <!--Inventory Activity End-->
 
+    <!--Orders Activity-->
+    <string name="orders_activity_title">רשימת הזמנות</string>
+    <string name="mark_as_ready_action">סמן כמוכנה</string>
+    <string name="mark_as_delivered_action">סמן כסופקה ללקוח</string>
+    <string name="order_ready">מוכן!</string>
+    <!--Orders Activity End-->
+
+    <!--Order Details Popup-->
+    <string name="details_popup_title">פרטי הזמנה מספר</string>
+    <string name="custome_name_title">שם הלקוח:</string>
+    <string name="time_title">זמן מבוקש לאספקה:</string>
+    <string name="item_title">שם הפריט:</string>
+    <string name="item_price">מחיר:</string>
+    <string name="time_not_specified">לא צויין</string>
+    <string name="meal_title">שם הארוחה:</string>
+    <string name="comment_title">הערת לקוח:</string>
+    <string name="items_title">פריטים:</string>
+    <string name="meals_title">ארוחות:</string>
+    <!--Order Details Popup End-->
+
 </resources>
