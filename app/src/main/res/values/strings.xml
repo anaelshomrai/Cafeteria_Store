@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Time2eaT</string>
 
-    <!--Inventory Activity-->
+    <!--Inventory Tab-->
+    <string name="inventory_tab_title">Inventory</string>
     <string name="toggle_btn_text_on">In Stock</string>
     <string name="toggle_btn_text_off">Not in Stock</string>
     <!--Inventory Activity End-->
 
-    <!--Orders Activity-->
+    <!--Orders Tab-->
+    <string name="orders_tab_title">Orders</string>
     <string name="orders_activity_title">Orders</string>
     <string name="mark_as_ready_action">Mark as ready</string>
     <string name="mark_as_delivered_action">Mark as delivered</string>
@@ -27,4 +29,7 @@
     <!--Order Details Popup End-->
 
     <string name="star">&#9733;</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

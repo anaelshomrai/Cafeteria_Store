@@ -43,6 +43,18 @@ public class ApplicationConstant {
     public static final String UPDATE_ORDER_READY = "http://" + SERVER_IP +
             ":8080/CafeteriaServer/rest/data/updateOrderReady";
 
+    public static final String GET_SERVINGS_URL = "http://" + SERVER_IP +
+            ":8080/CafeteriaServer/rest/data/getServings";
+
+    public static final String UPDATE_ITEM_URL = "http://" + SERVER_IP +
+            ":8080/CafeteriaServer/rest/data/updateItem";
+    public static final String UPDATE_EXTRA_URL = "http://" + SERVER_IP +
+            ":8080/CafeteriaServer/rest/data/updateExtra";
+    public static final String UPDATE_MAIN_URL = "http://" + SERVER_IP +
+            ":8080/CafeteriaServer/rest/data/updateMain";
+    public static final String UPDATE_SERVINGS_URL = "http://" + SERVER_IP +
+            ":8080/CafeteriaServer/rest/data/updateServing";
+
 //    public static final String GET_MAINS_URL = "http://" + SERVER_IP +
 //            "/rest/data/getMains";
 //    public static final String GET_EXTRAS_URL = "http://" + SERVER_IP +
@@ -56,17 +68,17 @@ public class ApplicationConstant {
 //    public static final String UPDATE_ORDER_READY = "http://" + SERVER_IP +
 //            "/rest/data/updateOrderReady";
 
-    public static final String GET_SERVINGS_URL = "http://" + SERVER_IP +
-            "/rest/data/getServings";
-
-    public static final String UPDATE_ITEM_URL = "http://" + SERVER_IP +
-            "/rest/data/updateItem";
-    public static final String UPDATE_EXTRA_URL = "http://" + SERVER_IP +
-            "/rest/data/updateExtra";
-    public static final String UPDATE_MAIN_URL = "http://" + SERVER_IP +
-            "/rest/data/updateMain";
-    public static final String UPDATE_SERVINGS_URL = "http://" + SERVER_IP +
-            "/rest/data/updateServing";
+//    public static final String GET_SERVINGS_URL = "http://" + SERVER_IP +
+//            "/rest/data/getServings";
+//
+//    public static final String UPDATE_ITEM_URL = "http://" + SERVER_IP +
+//            "/rest/data/updateItem";
+//    public static final String UPDATE_EXTRA_URL = "http://" + SERVER_IP +
+//            "/rest/data/updateExtra";
+//    public static final String UPDATE_MAIN_URL = "http://" + SERVER_IP +
+//            "/rest/data/updateMain";
+//    public static final String UPDATE_SERVINGS_URL = "http://" + SERVER_IP +
+//            "/rest/data/updateServing";
 
     public static final String DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static final String DATE_FORMAT = "dd-MM-yyyy";

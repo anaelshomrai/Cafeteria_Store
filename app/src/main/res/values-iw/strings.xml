@@ -3,13 +3,14 @@
     <string name="app_name">Time2eaT</string>
 
 
-    <!--Inventory Activity-->
+    <!--Inventory Tab-->
+    <string name="inventory_tab_title">רשימת מלאי</string>
     <string name="toggle_btn_text_on">במלאי</string>
     <string name="toggle_btn_text_off">חסר במלאי</string>
     <!--Inventory Activity End-->
 
-    <!--Orders Activity-->
-    <string name="orders_activity_title">רשימת הזמנות</string>
+    <!--Orders Tab-->
+    <string name="orders_tab_title">רשימת הזמנות</string>
     <string name="mark_as_ready_action">סמן כמוכנה</string>
     <string name="mark_as_delivered_action">סמן כסופקה ללקוח</string>
     <string name="order_ready">מוכן!</string>
