@@ -10,5 +10,6 @@
     <color name="colorEevenRow">#edd3d3</color>
     <color name="colorOddRow">#e2b7b7</color>
     <color name="colorSelectedRow">#d7d9dd</color>
+    <color name="iconBackgroundColor">#CC2735</color>
 
 </resources>
