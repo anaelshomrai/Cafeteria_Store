@@ -11,6 +11,7 @@
 
     <!--Orders Tab-->
     <string name="orders_tab_title">רשימת הזמנות</string>
+    <string name="orders_ready_tab_title">הזמנות מוכנות</string>
     <string name="mark_as_ready_action">סמן כמוכנה</string>
     <string name="mark_as_delivered_action">סמן כסופקה ללקוח</string>
     <string name="order_ready">מוכן!</string>

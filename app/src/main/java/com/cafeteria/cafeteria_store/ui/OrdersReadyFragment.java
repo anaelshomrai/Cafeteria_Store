@@ -58,7 +58,7 @@ import java.util.TimerTask;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrdersFragment extends Fragment {
+public class OrdersReadyFragment extends Fragment {
 
     private RecyclerView rvOrders;
     private List<Order> ordersList;
@@ -71,7 +71,7 @@ public class OrdersFragment extends Fragment {
     Toolbar toolbar;
     View fragmentView;
 
-    public OrdersFragment() {
+    public OrdersReadyFragment() {
         // Required empty public constructor
     }
 
@@ -79,7 +79,7 @@ public class OrdersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        fragmentView = inflater.inflate(R.layout.fragment_orders, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_orderes_ready, container, false);
         toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar);
         progressBar = (ProgressBar)fragmentView.findViewById(R.id.progress);
         rvOrders = (RecyclerView)fragmentView.findViewById(R.id.rvOrders);
@@ -92,13 +92,13 @@ public class OrdersFragment extends Fragment {
 //                ordersList = gson.fromJson(json.toString(), listType);
 //            } else {
 //                Log.e("DEBUG","onCreate executr get Orders");
-            startTimer();
+        startTimer();
 //       }
 //
         return fragmentView;
     }
 
-    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder> {
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<OrdersReadyFragment.RecyclerViewAdapter.CustomViewHolder> {
 
         private List<Order> orders;
         private Context context;
@@ -279,7 +279,7 @@ public class OrdersFragment extends Fragment {
                 int position = getAdapterPosition();
                 final Order order = orders.get(position);
                 final View innerView = view;
-                final RecyclerViewAdapter.CustomViewHolder holder = (RecyclerViewAdapter.CustomViewHolder)view.getTag();
+                final CustomViewHolder holder = (CustomViewHolder)view.getTag();
                 holder.rlLayout.setBackgroundColor(getResources().getColor(R.color.colorSelectedRow));
                 AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
                 Log.e("DEBUG","Activity null or what?? - "+ getActivity());
@@ -287,7 +287,7 @@ public class OrdersFragment extends Fragment {
                         new ActionMode.Callback() {
                             @Override
                             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                                mode.getMenuInflater().inflate(R.menu.order_ready_menu, menu);
+                                mode.getMenuInflater().inflate(R.menu.order_delivered_menu, menu);
                                 isActionModeOn = true;
                                 return true;
                             }
@@ -297,9 +297,9 @@ public class OrdersFragment extends Fragment {
                                 //Sometimes the meu will not be visible so for that we need to set their visibility manually in this method
                                 //So here show action menu according to SDK Levels
                                 if (Build.VERSION.SDK_INT < 11) {
-                                    MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_ready), MenuItemCompat.SHOW_AS_ACTION_NEVER);
+                                    MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_delivered), MenuItemCompat.SHOW_AS_ACTION_NEVER);
                                 } else {
-                                    menu.findItem(R.id.action_ready).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                                    menu.findItem(R.id.action_delivered).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                                 }
 
                                 return true;
@@ -308,9 +308,9 @@ public class OrdersFragment extends Fragment {
                             @Override
                             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                                 switch (item.getItemId()) {
-                                    case R.id.action_ready:
-                                        Toast.makeText(getActivity(),"Ready",Toast.LENGTH_SHORT).show();
-                                        order.setReady(true);
+                                    case R.id.action_delivered:
+                                        Toast.makeText(getActivity(), "Delivered", Toast.LENGTH_SHORT).show();
+                                        order.setDelivered(true);
                                         // update in server
                                         new AsyncTask<String, Void, Void>() {
 
@@ -320,7 +320,7 @@ public class OrdersFragment extends Fragment {
                                                 String jsonOrder = gson.toJson(order, Order.class);
                                                 URL url = null;
                                                 try {
-                                                    url = new URL(ApplicationConstant.UPDATE_ORDER_READY);
+                                                    url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
                                                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                                                     con.setDoOutput(true);
                                                     con.setDoInput(true);
@@ -352,13 +352,12 @@ public class OrdersFragment extends Fragment {
 
                                                 } catch (MalformedURLException e) {
                                                     e.printStackTrace();
-                                                }  catch (IOException e) {
+                                                } catch (IOException e) {
                                                     e.printStackTrace();
                                                 }
                                                 return null;
                                             }
                                         }.execute();
-                                        holder.tvReady.setVisibility(View.VISIBLE);
                                         orders.remove(order);
                                         notifyDataSetChanged();
                                         break;
@@ -391,13 +390,13 @@ public class OrdersFragment extends Fragment {
                 Type listType = new TypeToken<ArrayList<Order>>() {
                 }.getType();
                 ordersList = new Gson().fromJson(response, listType);
-                Log.e("DEBUG","Orders size : " + ordersList.size());
-                adapter = new RecyclerViewAdapter( getActivity(), ordersList);
+                Log.e("DEBUG", "Orders size : " + ordersList.size());
+                adapter = new RecyclerViewAdapter(getActivity(), ordersList);
                 rvOrders.setAdapter(adapter);
                 rvOrders.setLongClickable(true);
                 progressBar.setVisibility(View.INVISIBLE);
                 adapter.notifyDataSetChanged();
-                if( mActionMode != null ) {
+                if (mActionMode != null) {
                     mActionMode.finish();
                 }
             }
@@ -407,7 +406,7 @@ public class OrdersFragment extends Fragment {
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_ORDERS_URL);
+                URL url = new URL(ApplicationConstant.GET_ORDERS_READY_URL);
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -473,13 +472,14 @@ public class OrdersFragment extends Fragment {
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
-                        Log.e("DEBUG","timer executr get Orders");
+                        Log.e("DEBUG", "timer executr get Orders");
                         new GetOrdersTask().execute();
                     }
                 });
             }
         };
     }
+}
 
 
 //    private class UpdateOrderStateTask extends AsyncTask<String,Void,Void> {
@@ -490,7 +490,3 @@ public class OrdersFragment extends Fragment {
 //        }
 //    }
 
-
-
-
-}

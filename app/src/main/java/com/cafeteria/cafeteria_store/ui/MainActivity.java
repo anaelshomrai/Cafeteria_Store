@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         // Adding to the adapter the three fragments and their titlesAnimation
         adapter.addFragment(new InventoryFragment(), getResources().getString(R.string.inventory_tab_title));
         adapter.addFragment(new OrdersFragment(), getResources().getString(R.string.orders_tab_title));
+        adapter.addFragment(new OrdersReadyFragment(), getResources().getString(R.string.orders_ready_tab_title));
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);

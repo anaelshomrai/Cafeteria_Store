@@ -235,4 +235,6 @@ public class Order implements Serializable{
     public void setPickupTime(String pickupTime) {
         this.pickupTime = pickupTime;
     }
+
+
 }

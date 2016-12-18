@@ -2,6 +2,8 @@ package com.cafeteria.cafeteria_store;
 
 import android.app.Application;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.util.Log;
 
 import com.cafeteria.cafeteria_store.data.Order;
@@ -21,16 +23,28 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Shira Elitzur on 22/11/2016.
  */
 
 public class App extends Application {
+    private static Configuration configuration;
+    public static  String language = "iw";
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        if (Build.VERSION.SDK_INT < 17){
+            config.locale = locale;
+        }else{
+            config.setLocale(locale);
+        }
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
         // initialize OneSignal for handling push notifications
 //        OneSignal.startInit(this).setNotificationOpenedHandler(new MyNotificationOpenedHandler()).init();
 //        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
@@ -58,5 +72,19 @@ public class App extends Application {
 //
 //        }
 //    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        if (Build.VERSION.SDK_INT < 17){
+            config.locale = locale;
+        }else{
+            config.setLocale(locale);
+        }
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+    }
 
 }
