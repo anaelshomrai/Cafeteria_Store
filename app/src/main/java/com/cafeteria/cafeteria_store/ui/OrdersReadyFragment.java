@@ -1,6 +1,7 @@
 package com.cafeteria.cafeteria_store.ui;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -62,14 +64,18 @@ public class OrdersReadyFragment extends Fragment {
 
     private RecyclerView rvOrders;
     private List<Order> ordersList;
-    private ActionMode mActionMode;
+    //    private ActionMode mActionMode;
     private Timer timer;
     private TimerTask timerTask;
     private final Handler handler = new Handler();
     private ProgressBar progressBar;
     private RecyclerViewAdapter adapter;
+    private TextView tvEmptyList;
     Toolbar toolbar;
     View fragmentView;
+    private RelativeLayout bac_dim_layout;
+    private Order readyOrder;
+    private List<Order> removedOrders = new ArrayList<>();
 
     public OrdersReadyFragment() {
         // Required empty public constructor
@@ -78,12 +84,15 @@ public class OrdersReadyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.e("DEBUG","Orders On Create View");
         // Inflate the layout for this fragment
         fragmentView = inflater.inflate(R.layout.fragment_orderes_ready, container, false);
         toolbar = (Toolbar)fragmentView.findViewById(R.id.toolbar);
+        tvEmptyList = (TextView)fragmentView.findViewById(R.id.tvEmptyList);
         progressBar = (ProgressBar)fragmentView.findViewById(R.id.progress);
         rvOrders = (RecyclerView)fragmentView.findViewById(R.id.rvOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(getActivity()));
+        bac_dim_layout = (RelativeLayout)fragmentView.findViewById(R.id.bac_dim_layout);
 //        String json = getIntent().getStringExtra("orders_list");
 //        if( json != null && json.equals("")) {
 //                Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss.SSSZ").create();
@@ -98,7 +107,7 @@ public class OrdersReadyFragment extends Fragment {
         return fragmentView;
     }
 
-    public class RecyclerViewAdapter extends RecyclerView.Adapter<OrdersReadyFragment.RecyclerViewAdapter.CustomViewHolder> {
+    public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.CustomViewHolder> {
 
         private List<Order> orders;
         private Context context;
@@ -125,14 +134,14 @@ public class OrdersReadyFragment extends Fragment {
                 // On Click Event - opens the popup window with the details of the order
                 @Override
                 public void onClick(View view) {
-                    if( mActionMode != null && isActionModeOn ) {
-                        // if the user click on the order when it is already chosen with long click, the choice canceled
-                        // and the click is not opening the popup
-                        mActionMode.finish();
-                        return;
-                    }
+//                    if( mActionMode != null && isActionModeOn ) {
+//                        // if the user click on the order when it is already chosen with long click, the choice canceled
+//                        // and the click is not opening the popup
+//                        mActionMode.finish();
+//                        return;
+//                    }
                     int itemPosition = rvOrders.getChildLayoutPosition(view);
-                    Order o = orders.get(itemPosition);
+                    final Order o = orders.get(itemPosition);
                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     final View inflatedView = layoutInflater.inflate(R.layout.order_details_popup, null,false);
 
@@ -146,61 +155,84 @@ public class OrdersReadyFragment extends Fragment {
                     } else {
                         tvTime.setText(getResources().getString(R.string.time_not_specified));
                     }
+                    int dp = (int) (getResources().getDimension(R.dimen.appTextSize) / getResources().getDisplayMetrics().density);
 
                     llDetails = (LinearLayout) inflatedView.findViewById(R.id.llDetails);
                     if( o.getItems() != null && o.getItems().size() > 0 ) {
                         TextView t = new TextView(getActivity());
+                        t.setTextSize(dp);
                         t.setText(getResources().getString(R.string.items_title));
                         t.setTypeface(null, Typeface.BOLD);
                         llDetails.addView(t);
                         for( OrderedItem item : o.getItems() ) {
                             t = new TextView(getActivity());
                             t.setText(getResources().getString(R.string.star) + " " + item.getParentItem().getTitle());
+                            t.setTextSize(dp);
                             llDetails.addView(t);
                             if( item.getComment() != null && !item.getComment().equals("")) {
                                 t = new TextView(getActivity());
+                                t.setTextSize(dp);
                                 t.setText(getResources().getString(R.string.comment_title) + " " + item.getComment());
                                 llDetails.addView(t);
                             }
                         }
 
                         t = new TextView(getActivity());
+                        t.setTextSize(dp);
                         t.setText("Space");
                         t.setVisibility(View.INVISIBLE);
                         llDetails.addView(t);
 
+                    } else {
+                        Log.e("ORDER","ITEMS EMPTY");
                     }
                     if( o.getMeals() != null && o.getMeals().size() > 0 ) {
                         TextView t = new TextView(getActivity());
+                        t.setTextSize(dp);
                         t.setText(getResources().getString(R.string.meals_title));
                         t.setTypeface(null, Typeface.BOLD);
                         llDetails.addView(t);
                         for( OrderedMeal meal : o.getMeals()) {
                             t = new TextView(getActivity());
+                            t.setTextSize(dp);
                             t.setText(getResources().getString(R.string.star) + " " + getResources().getString(R.string.meal_title) + " " + meal.getTitle());
                             //t.setGravity(Gravity.CENTER);
                             llDetails.addView(t);
                             for(Extra extra : meal.getChosenExtras()) {
                                 t = new TextView(getActivity());
+                                t.setTextSize(dp);
                                 t.setText(extra.getTitle());
                                 llDetails.addView(t);
                             }
 
                             if( meal.getComment() != null && !meal.getComment().equals("") ) {
                                 t = new TextView(getActivity());
+                                t.setTextSize(dp);
                                 t.setText(getResources().getString(R.string.comment_title) + " " + meal.getComment());
                                 t.setTypeface(null, Typeface.BOLD);
                                 llDetails.addView(t);
                             }
 
                             t = new TextView(getActivity());
+                            t.setTextSize(dp);
                             t.setText("Space");
                             t.setVisibility(View.INVISIBLE);
                             llDetails.addView(t);
                         }
                     } else {
-                        llDetails.setVisibility(View.GONE);
+                        Log.e("ORDER","MEALS EMPTY");
+//                        llDetails.setVisibility(View.GONE);
                     }
+
+                    Button btn = (Button)inflatedView.findViewById(R.id.btnMarkAsReady);
+                    btn.setText(getResources().getString(R.string.mark_as_delivered_action));
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            readyOrder = o;
+                            markAsDelivered();
+                        }
+                    });
 
                     Display display = getActivity().getWindowManager().getDefaultDisplay();
                     Point size = new Point();
@@ -209,17 +241,83 @@ public class OrdersReadyFragment extends Fragment {
                     int location[] = new int[2];
                     view.getLocationOnScreen(location);
 
-                    popupWindow = new PopupWindow(inflatedView, size.x - 70,size.y - 550, true );
+                    float width = getResources().getDimension(R.dimen.widthPopUp);
+                    float height = getResources().getDimension(R.dimen.heightPopUp);
+                    popupWindow = new PopupWindow(inflatedView, (int)(size.x - width),(int)(size.y - height), true );
                     popupWindow.setFocusable(true);
                     popupWindow.setOutsideTouchable(true);
                     popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popup_bg));
                     popupWindow.setAnimationStyle(android.R.anim.fade_in); // call this before showing the popup
                     Log.e("DEBUG","Activity Focus: " + getActivity().getCurrentFocus());
-                    popupWindow.showAtLocation(fragmentView , Gravity.BOTTOM, 0,30);  // 0 - X postion and 150 - Y position
-
+                    popupWindow.showAtLocation(fragmentView , Gravity.BOTTOM, 0,70);  // 0 - X postion and 150 - Y position
+                    bac_dim_layout.setVisibility(View.VISIBLE);
+                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            bac_dim_layout.setVisibility(View.GONE);
+                        }
+                    });
                 }
             });
             return viewHolder;
+        }
+
+        public void markAsDelivered( ) {
+            Toast.makeText(getActivity(),"Delivered",Toast.LENGTH_SHORT).show();
+            readyOrder.setDelivered(true);
+            Log.e("DEBUG","Orders size() before remove - "+orders.size());
+            adapter.orders.remove(readyOrder);
+            removedOrders.add(readyOrder);
+            Log.e("DEBUG","Orders size() after remove - "+orders.size());
+            adapter.notifyDataSetChanged();
+            // update in server
+            new AsyncTask<String, Void, Void>() {
+
+                @Override
+                protected Void doInBackground(String... strings) {
+                    Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss.SSSZ").create();
+                    String jsonOrder = gson.toJson(readyOrder, Order.class);
+                    URL url = null;
+                    try {
+                        url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
+                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                        con.setDoOutput(true);
+                        con.setDoInput(true);
+                        con.setRequestProperty("Content-Type", "text/plain");
+                        con.setRequestProperty("Accept", "text/plain");
+                        con.setRequestMethod("POST");
+
+                        OutputStream os = con.getOutputStream();
+                        os.write(jsonOrder.getBytes("UTF-8"));
+                        os.flush();
+
+                        if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                            return null;
+                        }
+
+                        // Response
+                        StringBuilder response = new StringBuilder();
+                        BufferedReader input = new BufferedReader(
+                                new InputStreamReader(con.getInputStream()));
+
+                        String line;
+                        while ((line = input.readLine()) != null) {
+                            response.append(line + "\n");
+                        }
+
+                        input.close();
+
+                        con.disconnect();
+
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }  catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute();
+            popupWindow.dismiss();
         }
 
         @Override
@@ -244,13 +342,13 @@ public class OrdersReadyFragment extends Fragment {
             return (null != orders ? orders.size() : 0);
         }
 
-        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnLongClickListener,
-                MenuItem.OnMenuItemClickListener {
+        class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener, View.OnLongClickListener   {
 
             protected TextView tvCustomer;
             protected TextView tvDate;
             protected RelativeLayout rlLayout;
             protected TextView tvReady;
+            //protected Button btnMarkAsReady;
 
             public CustomViewHolder(View view) {
                 super(view);
@@ -258,14 +356,10 @@ public class OrdersReadyFragment extends Fragment {
                 this.tvDate = (TextView) view.findViewById(R.id.tvDate);
                 this.rlLayout = (RelativeLayout) view.findViewById(R.id.rlLayout);
                 this.tvReady = (TextView) view.findViewById(R.id.tvReady);
+//                this.btnMarkAsReady = (Button) view.findViewById(R.id.btnMarkAsReady);
                 view.setOnLongClickListener(this);
                 view.setOnCreateContextMenuListener(this);
                 view.setTag(this);
-            }
-
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                return false;
             }
 
             @Override
@@ -276,103 +370,17 @@ public class OrdersReadyFragment extends Fragment {
 
             @Override
             public boolean onLongClick(View view) {
-                int position = getAdapterPosition();
-                final Order order = orders.get(position);
-                final View innerView = view;
-                final CustomViewHolder holder = (CustomViewHolder)view.getTag();
-                holder.rlLayout.setBackgroundColor(getResources().getColor(R.color.colorSelectedRow));
-                AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-                Log.e("DEBUG","Activity null or what?? - "+ getActivity());
-                mActionMode = appCompatActivity.startSupportActionMode(
-                        new ActionMode.Callback() {
-                            @Override
-                            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                                mode.getMenuInflater().inflate(R.menu.order_delivered_menu, menu);
-                                isActionModeOn = true;
-                                return true;
-                            }
 
-                            @Override
-                            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                                //Sometimes the meu will not be visible so for that we need to set their visibility manually in this method
-                                //So here show action menu according to SDK Levels
-                                if (Build.VERSION.SDK_INT < 11) {
-                                    MenuItemCompat.setShowAsAction(menu.findItem(R.id.action_delivered), MenuItemCompat.SHOW_AS_ACTION_NEVER);
-                                } else {
-                                    menu.findItem(R.id.action_delivered).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                                }
-
-                                return true;
-                            }
-
-                            @Override
-                            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                                switch (item.getItemId()) {
-                                    case R.id.action_delivered:
-                                        Toast.makeText(getActivity(), "Delivered", Toast.LENGTH_SHORT).show();
-                                        order.setDelivered(true);
-                                        // update in server
-                                        new AsyncTask<String, Void, Void>() {
-
-                                            @Override
-                                            protected Void doInBackground(String... strings) {
-                                                Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss.SSSZ").create();
-                                                String jsonOrder = gson.toJson(order, Order.class);
-                                                URL url = null;
-                                                try {
-                                                    url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
-                                                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                                                    con.setDoOutput(true);
-                                                    con.setDoInput(true);
-                                                    con.setRequestProperty("Content-Type", "text/plain");
-                                                    con.setRequestProperty("Accept", "text/plain");
-                                                    con.setRequestMethod("POST");
-
-                                                    OutputStream os = con.getOutputStream();
-                                                    os.write(jsonOrder.getBytes("UTF-8"));
-                                                    os.flush();
-
-                                                    if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                                                        return null;
-                                                    }
-
-                                                    // Response
-                                                    StringBuilder response = new StringBuilder();
-                                                    BufferedReader input = new BufferedReader(
-                                                            new InputStreamReader(con.getInputStream()));
-
-                                                    String line;
-                                                    while ((line = input.readLine()) != null) {
-                                                        response.append(line + "\n");
-                                                    }
-
-                                                    input.close();
-
-                                                    con.disconnect();
-
-                                                } catch (MalformedURLException e) {
-                                                    e.printStackTrace();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                return null;
-                                            }
-                                        }.execute();
-                                        orders.remove(order);
-                                        notifyDataSetChanged();
-                                        break;
-                                }
-                                mode.finish();
-                                return false;
-                            }
-
-                            @Override
-                            public void onDestroyActionMode(ActionMode mode) {
-                                holder.rlLayout.setBackgroundColor(getResources().getColor(R.color.colorHeadlines));
-                                isActionModeOn = false;
-                            }
-                        });
                 return true;
+            }
+        }
+
+        public void setAdapterList( List<Order> orders ) {
+            this.orders.clear();
+            for(Order order : orders) {
+                if( !removedOrders.contains(order)) {
+                    this.orders.add(order);
+                }
             }
         }
     }
@@ -390,14 +398,22 @@ public class OrdersReadyFragment extends Fragment {
                 Type listType = new TypeToken<ArrayList<Order>>() {
                 }.getType();
                 ordersList = new Gson().fromJson(response, listType);
-                Log.e("DEBUG", "Orders size : " + ordersList.size());
-                adapter = new RecyclerViewAdapter(getActivity(), ordersList);
-                rvOrders.setAdapter(adapter);
-                rvOrders.setLongClickable(true);
+                Log.e("DEBUG","Orders size : " + ordersList.size());
+                if( rvOrders.getAdapter() == null ) {
+                    adapter = new RecyclerViewAdapter( getActivity(), ordersList);
+                    rvOrders.setAdapter(adapter);
+                    rvOrders.setLongClickable(true);
+                } else {
+                    adapter = (RecyclerViewAdapter) rvOrders.getAdapter();
+                    adapter.setAdapterList(ordersList);
+                }
                 progressBar.setVisibility(View.INVISIBLE);
+
                 adapter.notifyDataSetChanged();
-                if (mActionMode != null) {
-                    mActionMode.finish();
+                if(ordersList.isEmpty() || ordersList.size() < 1) {
+                    tvEmptyList.setVisibility(View.VISIBLE);
+                } else {
+                    tvEmptyList.setVisibility(View.GONE);
                 }
             }
         }
@@ -435,14 +451,6 @@ public class OrdersReadyFragment extends Fragment {
     }
 
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        //onResume we start our timer so it can start when the app comes from the background
-//        startTimer();
-//    }
-
     public void startTimer() {
         //set a new Timer
         timer = new Timer();
@@ -452,7 +460,7 @@ public class OrdersReadyFragment extends Fragment {
 
         //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
         //on production we will reduce the time to(at least):
-        timer.schedule(timerTask,0, 10000);
+        timer.schedule(timerTask,0, 60000);
         //timer.schedule(timerTask, 5000, 10000);
     }
 
@@ -472,21 +480,12 @@ public class OrdersReadyFragment extends Fragment {
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
-                        Log.e("DEBUG", "timer executr get Orders");
+                        Log.e("DEBUG","timer executr get Orders");
                         new GetOrdersTask().execute();
                     }
                 });
             }
         };
     }
+
 }
-
-
-//    private class UpdateOrderStateTask extends AsyncTask<String,Void,Void> {
-//
-//        @Override
-//        protected Void doInBackground(String... strings) {
-//
-//        }
-//    }
-

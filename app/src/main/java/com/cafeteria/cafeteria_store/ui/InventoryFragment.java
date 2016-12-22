@@ -3,6 +3,7 @@ package com.cafeteria.cafeteria_store.ui;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -68,18 +69,10 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        fragmentView =  inflater.inflate(R.layout.fragment_inventory, container, false);
-
-        lvInventory = (ListView)fragmentView.findViewById(R.id.lvInventory);
-        inventoryItems = new ArrayList<>();
-        backup = new ArrayList<>();
-        inventoryAdapter = new InventoryAdapter(getActivity(),R.layout.single_inventory,inventoryItems);
-
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("DEBUG","Inventory On Create");
         getItemsTask = new GetItemsTask();
         getItemsTask.execute();
 
@@ -91,6 +84,19 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
 
         getServingsTask = new GetServingsTask();
         getServingsTask.execute();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        Log.e("DEBUG","Inventory On Create View");
+        // Inflate the layout for this fragment
+        fragmentView =  inflater.inflate(R.layout.fragment_inventory, container, false);
+
+        lvInventory = (ListView)fragmentView.findViewById(R.id.lvInventory);
+        inventoryItems = new ArrayList<>();
+        backup = new ArrayList<>();
+        inventoryAdapter = new InventoryAdapter(getActivity(),R.layout.single_inventory,inventoryItems);
 
         searchView = (SearchView) fragmentView.findViewById(R.id.search); // inititate a search view
         searchView.setOnQueryTextListener(this);

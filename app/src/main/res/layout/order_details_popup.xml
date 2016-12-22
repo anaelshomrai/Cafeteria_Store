@@ -36,23 +36,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingRight="50dp"
-            android:paddingLeft="50dp"
-            android:paddingTop="15dp"
-            android:weightSum="10">
+            android:gravity="center"
+            android:paddingTop="15dp">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/custome_name_title"/>
+                android:text="@string/custome_name_title"
+                android:textSize="@dimen/appTextSize"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tvCustomerName"
-                android:layout_width="0dp"
-                android:layout_weight="5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Israel Israeli"/>
+                android:text="Israel Israeli"
+                android:textSize="@dimen/appTextSize"/>
 
         </LinearLayout>
 
@@ -60,22 +62,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="50dp"
-            android:paddingLeft="50dp"
-            android:weightSum="10">
+            android:gravity="center">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="7"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/time_title"/>
+                android:text="@string/time_title"
+                android:textSize="@dimen/appTextSize"/>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tvTime"
-                android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12:34"/>
+                android:text="12:34"
+                android:textSize="@dimen/appTextSize"/>
 
         </LinearLayout>
 
@@ -96,6 +100,14 @@
             </LinearLayout>
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/btnMarkAsReady"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/mark_as_ready_action"
+            android:textColor="@color/colorHeadlines"
+            android:background="@color/colorPrimary"/>
 
     </LinearLayout>
 

@@ -28,6 +28,7 @@
     <string name="comment_title">הערת לקוח:</string>
     <string name="items_title">פריטים:</string>
     <string name="meals_title">ארוחות:</string>
+    <string name="no_orders">No Orders!</string>
     <!--Order Details Popup End-->
 
 </resources>

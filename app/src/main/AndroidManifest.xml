@@ -15,8 +15,7 @@
         <activity
             android:name=".ui.OrdersActivity"
             android:label="@string/orders_activity_title"
-            android:theme="@style/TestTheme">
-        </activity>
+            android:theme="@style/TestTheme"></activity>
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

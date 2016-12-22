@@ -5,7 +5,4 @@
     <dimen name="headLines1">40dp</dimen>
     <dimen name="headLines2">30dp</dimen>
     <dimen name="headLines3">20dp</dimen>
-    <dimen name="appTextSize">15dp</dimen>
-    <dimen name="heightPopUp">115dp</dimen>
-    <dimen name="widthPopUp">40dp</dimen>
 </resources>

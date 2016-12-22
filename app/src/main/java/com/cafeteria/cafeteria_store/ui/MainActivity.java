@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new OrdersFragment(), getResources().getString(R.string.orders_tab_title));
         adapter.addFragment(new OrdersReadyFragment(), getResources().getString(R.string.orders_ready_tab_title));
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(1);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
