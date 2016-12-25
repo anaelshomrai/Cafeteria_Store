@@ -1,28 +1,12 @@
 package com.cafeteria.cafeteria_store;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.util.Log;
 
-import com.cafeteria.cafeteria_store.data.Order;
-import com.cafeteria.cafeteria_store.ui.OrdersActivity;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 //import com.onesignal.OSNotificationOpenResult;
 //import com.onesignal.OneSignal;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 /**

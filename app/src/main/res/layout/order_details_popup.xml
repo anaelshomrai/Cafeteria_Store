@@ -1,114 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<LinearLayout
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="20dp">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/details_popup_title"
-                android:textSize="@dimen/headLines3"/>
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tvOrderNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Order Number"
-                android:textSize="@dimen/headLines3"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:text="@string/details_popup_title"
+            android:textSize="@dimen/headLines3"/>
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvOrderNumber"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingTop="15dp">
+            android:text="Order Number"
+            android:textSize="@dimen/headLines3"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/custome_name_title"
-                android:textSize="@dimen/appTextSize"/>
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tvCustomerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Israel Israeli"
-                android:textSize="@dimen/appTextSize"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/time_title"
-                android:textSize="@dimen/appTextSize"/>
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12:34"
-                android:textSize="@dimen/appTextSize"/>
-
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="35dp">
-
-            <LinearLayout
-                android:id="@+id/llDetails"
-                android:orientation="vertical"
-                android:paddingTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </LinearLayout>
-
-        </ScrollView>
-
-        <Button
-            android:id="@+id/btnMarkAsReady"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mark_as_ready_action"
-            android:textColor="@color/colorHeadlines"
-            android:background="@color/colorPrimary"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/custome_name_title"
+            android:textSize="@dimen/appTextSize"/>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvCustomerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Israel Israeli"
+            android:textSize="@dimen/appTextSize"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_title"
+            android:textSize="@dimen/appTextSize"/>
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:34"
+            android:textSize="@dimen/appTextSize"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="35dp">
+
+        <LinearLayout
+            android:id="@+id/llDetails"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btnMarkAsReady"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mark_as_ready_action"
+        android:textColor="@color/colorHeadlines"
+        android:background="@color/colorPrimary"/>
+
+</LinearLayout>
 
 </LinearLayout>

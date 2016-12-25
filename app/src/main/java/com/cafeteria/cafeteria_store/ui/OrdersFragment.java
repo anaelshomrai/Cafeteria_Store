@@ -64,7 +64,7 @@ public class OrdersFragment extends Fragment {
 
     private RecyclerView rvOrders;
     private List<Order> ordersList;
-//    private ActionMode mActionMode;
+    //    private ActionMode mActionMode;
     private Timer timer;
     private TimerTask timerTask;
     private final Handler handler = new Handler();
@@ -101,7 +101,7 @@ public class OrdersFragment extends Fragment {
 //                ordersList = gson.fromJson(json.toString(), listType);
 //            } else {
 //                Log.e("DEBUG","onCreate executr get Orders");
-            startTimer();
+        startTimer();
 //       }
 //
         return fragmentView;

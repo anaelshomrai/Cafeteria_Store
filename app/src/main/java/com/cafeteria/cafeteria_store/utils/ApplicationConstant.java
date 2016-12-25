@@ -69,8 +69,8 @@ public class ApplicationConstant {
             "/rest/data/updateOrderDelivered";
     public static final String UPDATE_ORDER_READY = "http://" + SERVER_IP +
             "/rest/data/updateOrderReady";
-public static final String GET_ORDERS_READY_URL = "http://" + SERVER_IP +
-        "/rest/data/getOrdersReady";
+    public static final String GET_ORDERS_READY_URL = "http://" + SERVER_IP +
+            "/rest/data/getOrdersReady";
 
     public static final String GET_SERVINGS_URL = "http://" + SERVER_IP +
             "/rest/data/getServings";
@@ -87,4 +87,5 @@ public static final String GET_ORDERS_READY_URL = "http://" + SERVER_IP +
     public static final String DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static final String DATE_FORMAT = "dd-MM-yyyy";
 }
+
 
