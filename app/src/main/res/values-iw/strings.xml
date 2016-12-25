@@ -15,6 +15,7 @@
     <string name="mark_as_ready_action">סמן כמוכנה</string>
     <string name="mark_as_delivered_action">סמן כסופקה ללקוח</string>
     <string name="order_ready">מוכן!</string>
+    <string name="no_orders">אין הזמנות!</string>
     <!--Orders Activity End-->
 
     <!--Order Details Popup-->
@@ -28,7 +29,8 @@
     <string name="comment_title">הערת לקוח:</string>
     <string name="items_title">פריטים:</string>
     <string name="meals_title">ארוחות:</string>
-    <string name="no_orders">No Orders!</string>
+    <string name="drink_title">שתיה:</string>
+    <string name="scan_code_action">סרוק קוד QR</string>
     <!--Order Details Popup End-->
 
 </resources>

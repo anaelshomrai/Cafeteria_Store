@@ -28,7 +28,11 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new OrdersFragment(), getResources().getString(R.string.orders_tab_title));
         adapter.addFragment(new OrdersReadyFragment(), getResources().getString(R.string.orders_ready_tab_title));
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(1);
+        // if the activity opens after intent from qr code scanning then the right tab is the ready orders on
+        // if not its the orders tab
+        int tab = getIntent().getIntExtra("tab",1);
+
+        viewPager.setCurrentItem(tab);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -1,18 +1,12 @@
 package com.cafeteria.cafeteria_store.ui;
 
-
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -21,11 +15,8 @@ import android.view.ContextMenu;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -42,6 +33,7 @@ import com.cafeteria.cafeteria_store.utils.ApplicationConstant;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.Result;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,10 +49,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OrdersFragment extends Fragment {
+public class OrdersFragment extends Fragment{
 
     private RecyclerView rvOrders;
     private List<Order> ordersList;
@@ -202,6 +196,14 @@ public class OrdersFragment extends Fragment {
                                 t = new TextView(getActivity());
                                 t.setTextSize(dp);
                                 t.setText(extra.getTitle());
+                                llDetails.addView(t);
+                            }
+
+                            if( meal.getChosenDrink() != null ) {
+                                t = new TextView(getActivity());
+                                t.setTextSize(dp);
+                                t.setText(getResources().getString(R.string.drink_title) + " " + meal.getChosenDrink().getTitle());
+                                //t.setTypeface(null, Typeface.BOLD);
                                 llDetails.addView(t);
                             }
 
@@ -676,6 +678,7 @@ public class OrdersFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String response) {
+            progressBar.setVisibility(View.INVISIBLE);
             if (response != null) {
                 Type listType = new TypeToken<ArrayList<Order>>() {
                 }.getType();

@@ -14,6 +14,7 @@
     <string name="mark_as_ready_action">Mark as ready</string>
     <string name="mark_as_delivered_action">Mark as delivered</string>
     <string name="order_ready">Ready!</string>
+    <string name="no_orders">No Orders!</string>
     <!--Orders Activity End-->
 
     <!--Order Details Popup-->
@@ -33,5 +34,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="no_orders">No Orders!</string>
+    <string name="drink_title">Drink:</string>
+    <string name="scan_code_action">Scan Order QR Code</string>
 </resources>

@@ -1,18 +1,14 @@
 package com.cafeteria.cafeteria_store.ui;
 
 
-        import android.app.Dialog;
         import android.content.Context;
+        import android.content.Intent;
         import android.graphics.Point;
         import android.graphics.Typeface;
         import android.os.AsyncTask;
-        import android.os.Build;
         import android.os.Bundle;
         import android.os.Handler;
         import android.support.v4.app.Fragment;
-        import android.support.v4.view.MenuItemCompat;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.view.ActionMode;
         import android.support.v7.widget.LinearLayoutManager;
         import android.support.v7.widget.RecyclerView;
         import android.support.v7.widget.Toolbar;
@@ -21,8 +17,6 @@ package com.cafeteria.cafeteria_store.ui;
         import android.view.Display;
         import android.view.Gravity;
         import android.view.LayoutInflater;
-        import android.view.Menu;
-        import android.view.MenuItem;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.Button;
@@ -57,6 +51,10 @@ package com.cafeteria.cafeteria_store.ui;
         import java.util.Timer;
         import java.util.TimerTask;
 
+        import me.dm7.barcodescanner.zxing.ZXingScannerView;
+
+        import static android.app.Activity.RESULT_OK;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -76,6 +74,7 @@ public class OrdersReadyFragment extends Fragment {
     private RelativeLayout bac_dim_layout;
     private Order readyOrder;
     private List<Order> removedOrders = new ArrayList<>();
+    private PopupWindow popupWindow;
 
     public OrdersReadyFragment() {
         // Required empty public constructor
@@ -112,7 +111,7 @@ public class OrdersReadyFragment extends Fragment {
         private List<Order> orders;
         private Context context;
 
-        private PopupWindow popupWindow;
+        //private PopupWindow popupWindow;
         private LinearLayout llDetails;
         private TextView tvOrderNumber;
         private TextView tvTime;
@@ -143,7 +142,7 @@ public class OrdersReadyFragment extends Fragment {
                     int itemPosition = rvOrders.getChildLayoutPosition(view);
                     final Order o = orders.get(itemPosition);
                     LayoutInflater layoutInflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    final View inflatedView = layoutInflater.inflate(R.layout.order_details_popup, null,false);
+                    final View inflatedView = layoutInflater.inflate(R.layout.ready_order_details_popup, null,false);
 
                     tvOrderNumber = (TextView) inflatedView.findViewById(R.id.tvOrderNumber);
                     tvOrderNumber.setText(o.getId()+"");
@@ -205,6 +204,14 @@ public class OrdersReadyFragment extends Fragment {
                                 llDetails.addView(t);
                             }
 
+                            if( meal.getChosenDrink() != null ) {
+                                t = new TextView(getActivity());
+                                t.setTextSize(dp);
+                                t.setText(getResources().getString(R.string.drink_title) + " " + meal.getChosenDrink().getTitle());
+                                //t.setTypeface(null, Typeface.BOLD);
+                                llDetails.addView(t);
+                            }
+
                             if( meal.getComment() != null && !meal.getComment().equals("") ) {
                                 t = new TextView(getActivity());
                                 t.setTextSize(dp);
@@ -231,6 +238,14 @@ public class OrdersReadyFragment extends Fragment {
                         public void onClick(View view) {
                             readyOrder = o;
                             markAsDelivered();
+                        }
+                    });
+
+                    inflatedView.findViewById(R.id.btnScanQRcode).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            readyOrder = o;
+                            scanQRcode();
                         }
                     });
 
@@ -271,53 +286,14 @@ public class OrdersReadyFragment extends Fragment {
             Log.e("DEBUG","Orders size() after remove - "+orders.size());
             adapter.notifyDataSetChanged();
             // update in server
-            new AsyncTask<String, Void, Void>() {
-
-                @Override
-                protected Void doInBackground(String... strings) {
-                    Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss.SSSZ").create();
-                    String jsonOrder = gson.toJson(readyOrder, Order.class);
-                    URL url = null;
-                    try {
-                        url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
-                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                        con.setDoOutput(true);
-                        con.setDoInput(true);
-                        con.setRequestProperty("Content-Type", "text/plain");
-                        con.setRequestProperty("Accept", "text/plain");
-                        con.setRequestMethod("POST");
-
-                        OutputStream os = con.getOutputStream();
-                        os.write(jsonOrder.getBytes("UTF-8"));
-                        os.flush();
-
-                        if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                            return null;
-                        }
-
-                        // Response
-                        StringBuilder response = new StringBuilder();
-                        BufferedReader input = new BufferedReader(
-                                new InputStreamReader(con.getInputStream()));
-
-                        String line;
-                        while ((line = input.readLine()) != null) {
-                            response.append(line + "\n");
-                        }
-
-                        input.close();
-
-                        con.disconnect();
-
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }  catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            }.execute();
+            new SetDeliveredTask().execute();
             popupWindow.dismiss();
+        }
+
+        public void scanQRcode() {
+            Intent intent = new Intent(getActivity(),ScanQRcodeActivity.class);
+            intent.putExtra("order_number",readyOrder.getId());
+            startActivityForResult(intent,1);
         }
 
         @Override
@@ -460,7 +436,7 @@ public class OrdersReadyFragment extends Fragment {
 
         //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
         //on production we will reduce the time to(at least):
-        timer.schedule(timerTask,0, 60000);
+        timer.schedule(timerTask,0, 10000);
         //timer.schedule(timerTask, 5000, 10000);
     }
 
@@ -488,4 +464,71 @@ public class OrdersReadyFragment extends Fragment {
         };
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if( requestCode == 1 ) {
+            if( resultCode == RESULT_OK) {
+                if(data.getData().toString().equals(ApplicationConstant.ORDER_MATCH)) {
+                    Toast.makeText(getActivity(),"Delivered",Toast.LENGTH_SHORT).show();
+                    readyOrder.setDelivered(true);
+                    Log.e("DEBUG","Orders size() before remove - "+adapter.orders.size());
+                    adapter.orders.remove(readyOrder);
+                    removedOrders.add(readyOrder);
+                    Log.e("DEBUG","Orders size() after remove - "+adapter.orders.size());
+                    adapter.notifyDataSetChanged();
+                    // update in server
+                    new SetDeliveredTask().execute();
+                    popupWindow.dismiss();
+                }
+                Toast.makeText(getActivity(),data.getData().toString(),Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private class SetDeliveredTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            Gson gson = new GsonBuilder().setDateFormat("dd-MM-yyyy HH:mm:ss.SSSZ").create();
+            String jsonOrder = gson.toJson(readyOrder, Order.class);
+            URL url = null;
+            try {
+                url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                con.setRequestProperty("Content-Type", "text/plain");
+                con.setRequestProperty("Accept", "text/plain");
+                con.setRequestMethod("POST");
+
+                OutputStream os = con.getOutputStream();
+                os.write(jsonOrder.getBytes("UTF-8"));
+                os.flush();
+
+                if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return null;
+                }
+
+                // Response
+                StringBuilder response = new StringBuilder();
+                BufferedReader input = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+
+                String line;
+                while ((line = input.readLine()) != null) {
+                    response.append(line + "\n");
+                }
+
+                input.close();
+
+                con.disconnect();
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }  catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }

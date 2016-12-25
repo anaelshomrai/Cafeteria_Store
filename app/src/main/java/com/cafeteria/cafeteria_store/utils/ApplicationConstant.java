@@ -86,6 +86,10 @@ public class ApplicationConstant {
 
     public static final String DATE_TIME_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static final String DATE_FORMAT = "dd-MM-yyyy";
+
+
+    public static final String ORDER_MATCH = "The scanned code match this order";
+    public static final String ORDER_DONT_MATCH ="The scanned code do not match this order";
 }
 
 
