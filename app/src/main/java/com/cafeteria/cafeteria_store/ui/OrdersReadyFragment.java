@@ -3,6 +3,8 @@ package com.cafeteria.cafeteria_store.ui;
 
         import android.content.Context;
         import android.content.Intent;
+        import android.content.pm.ActivityInfo;
+        import android.content.res.Configuration;
         import android.graphics.Point;
         import android.graphics.Typeface;
         import android.os.AsyncTask;
@@ -133,6 +135,14 @@ public class OrdersReadyFragment extends Fragment {
                 // On Click Event - opens the popup window with the details of the order
                 @Override
                 public void onClick(View view) {
+
+                    int currentOrientation = getResources().getConfiguration().orientation;
+                    if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                    }
+                    else {
+                        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+                    }
 //                    if( mActionMode != null && isActionModeOn ) {
 //                        // if the user click on the order when it is already chosen with long click, the choice canceled
 //                        // and the click is not opening the popup
@@ -270,6 +280,7 @@ public class OrdersReadyFragment extends Fragment {
                         @Override
                         public void onDismiss() {
                             bac_dim_layout.setVisibility(View.GONE);
+                            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
                         }
                     });
                 }
