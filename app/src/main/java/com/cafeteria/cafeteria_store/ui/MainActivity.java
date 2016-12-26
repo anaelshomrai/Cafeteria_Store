@@ -1,13 +1,19 @@
 package com.cafeteria.cafeteria_store.ui;
 
+        import android.Manifest;
+        import android.content.pm.PackageManager;
+        import android.os.Build;
         import android.support.design.widget.TabLayout;
+        import android.support.v4.app.ActivityCompat;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentStatePagerAdapter;
+        import android.support.v4.content.PermissionChecker;
         import android.support.v4.view.ViewPager;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.support.v7.widget.Toolbar;
+        import android.widget.Toast;
 
         import com.cafeteria.cafeteria_store.R;
 
@@ -15,11 +21,13 @@ package com.cafeteria.cafeteria_store.ui;
         import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private final int CAMREA_PERMISSION_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkCameraPermission();
 
         CustomPagerAdapter adapter = new CustomPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -41,6 +49,48 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    private void checkCameraPermission(){
+        int cameraPermission;
+
+        if(Build.VERSION.SDK_INT < 23 ){
+            cameraPermission = PermissionChecker.checkSelfPermission(this, Manifest.permission.CAMERA);
+
+            if (cameraPermission == PermissionChecker.PERMISSION_GRANTED) {
+
+            } else{
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA,
+                },CAMREA_PERMISSION_REQUEST);
+            }
+        } else{ //api 23 and above
+            cameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED ) {
+                // We don't have permission so prompt the user
+                requestPermissions(
+                        new String[]{Manifest.permission.CAMERA},
+                        CAMREA_PERMISSION_REQUEST
+                );
+            } else {
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case CAMREA_PERMISSION_REQUEST:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, getString(R.string.camera_permission_denied), Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
 
     /**
      * Pager is the element that manages and displays the tabs

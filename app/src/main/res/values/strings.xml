@@ -32,6 +32,8 @@
 
     <string name="star">&#9733;</string>
 
+    <string name="camera_permission_denied">You need camera permission for scanning the bar code</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drink_title">Drink:</string>
