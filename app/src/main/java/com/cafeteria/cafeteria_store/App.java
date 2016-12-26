@@ -2,10 +2,13 @@ package com.cafeteria.cafeteria_store;
 
 import android.app.Application;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 
 //import com.onesignal.OSNotificationOpenResult;
 //import com.onesignal.OneSignal;
+
+import com.cafeteria.cafeteria_store.data.Cafeteria;
 
 import java.util.Locale;
 
@@ -71,4 +74,34 @@ public class App extends Application {
         getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
     }
 
+    public static void changeLocale(Resources res, String locale){
+        configuration = res.getConfiguration();
+        switch (locale){
+            case "iw":
+                if (Build.VERSION.SDK_INT < 17){
+                    configuration.locale = new Locale("iw");
+                }else{
+                    configuration.setLocale(new Locale("iw"));
+                }
+                language = "iw";
+                break;
+            case "en":
+                if (Build.VERSION.SDK_INT < 17){
+                    configuration.locale = Locale.ENGLISH;
+                }else{
+                    configuration.setLocale(new Locale("en"));
+                }
+                language = "en";
+                break;
+            default:
+                if (Build.VERSION.SDK_INT < 17){
+                    configuration.locale = new Locale("iw");
+                }else{
+                    configuration.setLocale(new Locale("iw"));
+                }
+                language = "iw";
+                break;
+        }
+        res.updateConfiguration(configuration,res.getDisplayMetrics());
+    }
 }

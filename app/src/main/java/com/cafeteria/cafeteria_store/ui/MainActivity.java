@@ -1,21 +1,38 @@
 package com.cafeteria.cafeteria_store.ui;
 
         import android.Manifest;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
         import android.content.pm.PackageManager;
+        import android.graphics.Color;
         import android.os.Build;
+        import android.preference.PreferenceManager;
         import android.support.design.widget.TabLayout;
         import android.support.v4.app.ActivityCompat;
         import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentManager;
         import android.support.v4.app.FragmentStatePagerAdapter;
+        import android.support.v4.content.ContextCompat;
         import android.support.v4.content.PermissionChecker;
         import android.support.v4.view.ViewPager;
+        import android.support.v7.app.AlertDialog;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.support.v7.widget.Toolbar;
+        import android.text.InputType;
+        import android.view.LayoutInflater;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.EditText;
+        import android.widget.LinearLayout;
+        import android.widget.Switch;
         import android.widget.Toast;
 
         import com.cafeteria.cafeteria_store.R;
+        import com.cafeteria.cafeteria_store.data.Cafeteria;
+        import com.google.gson.Gson;
 
         import java.util.ArrayList;
         import java.util.List;
@@ -47,6 +64,82 @@ public class MainActivity extends AppCompatActivity {
         //activity_menu.setElevation(0);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.exit_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_exit:
+                showAlert();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showAlert(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater layout = getLayoutInflater();
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorHeadlines));
+        input.setLinkTextColor(ContextCompat.getColor(getBaseContext(),R.color.colorHeadlines));
+        input.setBackgroundColor(ContextCompat.getColor(getBaseContext(),R.color.colorPrimary));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialogBuilder.setView(input);
+        alertDialogBuilder
+                .setTitle(getString(R.string.dialog_manager_password_title))
+                .setMessage(getString(R.string.dialog_manager_password_message))
+                .setPositiveButton(getResources().getString(R.string.dialog_positve),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String password = input.getText().toString();
+                                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                String cafeteriaJSON = sharedPreferences.getString("cafeteria","");
+                                if (!cafeteriaJSON.equals("")){
+                                    Cafeteria c = new Gson().fromJson(cafeteriaJSON,Cafeteria.class);
+                                    if (c.getAdminPassword().equals(password)){
+                                        exit();
+                                    }else{
+                                        Toast.makeText(MainActivity.this,getString(R.string.dialog_not_match),Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                                dialogInterface.dismiss();
+
+                            }
+                        })
+                .setNegativeButton(getString(R.string.dialog_negative), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
+    }
+
+    private void exit(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String cafeteriaJSON = sharedPreferences.getString("cafeteria","");
+        if (!cafeteriaJSON.equals("")){
+            editor.remove("cafeteria");
+            editor.apply();
+        }
+        finish();
+        Intent chooseCategory = new Intent(this,ChooseCafeteriaActivity.class);
+        startActivity(chooseCategory);
     }
 
     private void checkCameraPermission(){

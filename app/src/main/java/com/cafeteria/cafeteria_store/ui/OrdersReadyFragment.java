@@ -409,7 +409,7 @@ public class OrdersReadyFragment extends Fragment {
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_ORDERS_READY_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_ORDERS_READY_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -479,7 +479,7 @@ public class OrdersReadyFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if( requestCode == 1 ) {
             if( resultCode == RESULT_OK) {
-                if(data.getData().toString().equals(ApplicationConstant.ORDER_MATCH)) {
+                if(data.getData().toString().equals(ApplicationConstant.getAddress(ApplicationConstant.ORDER_MATCH))) {
                     Toast.makeText(getActivity(),"Delivered",Toast.LENGTH_SHORT).show();
                     readyOrder.setDelivered(true);
                     Log.e("DEBUG","Orders size() before remove - "+adapter.orders.size());
@@ -504,7 +504,7 @@ public class OrdersReadyFragment extends Fragment {
             String jsonOrder = gson.toJson(readyOrder, Order.class);
             URL url = null;
             try {
-                url = new URL(ApplicationConstant.UPDATE_ORDER_DELIVERED);
+                url = new URL(ApplicationConstant.getAddress(ApplicationConstant.UPDATE_ORDER_DELIVERED));
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setDoOutput(true);
                 con.setDoInput(true);

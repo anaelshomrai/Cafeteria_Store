@@ -33,9 +33,26 @@
     <string name="star">&#9733;</string>
 
     <string name="camera_permission_denied">You need camera permission for scanning the bar code</string>
+    <string name="action_exit">Exit</string>
+
+
+    <!--Choose Cafeteria -->
+    <string name="choose_cafeteria_title">Choose Cafeteria</string>
+    <string name="choose_cafeteria_hint">Search Cafeteria..</string>
+    <string name="choose_cafeteria_btn">Next</string>
+    <string name="choose_cafeteria_toast">You must choose cafeteria</string>
+    <!--Choose Cafeteria End-->
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drink_title">Drink:</string>
     <string name="scan_code_action">Scan Order QR Code</string>
+
+    <string name="dialog_manager_password_title">Log out</string>
+    <string name="dialog_manager_log_in_password_title">Log In</string>
+    <string name="dialog_manager_password_message">Enter manager password</string>
+    <string name="dialog_positve">Ok</string>
+    <string name="dialog_negative">Cancel</string>
+    <string name="dialog_not_match">Password is not correct\nPlease Contact your manager</string>
+
 </resources>

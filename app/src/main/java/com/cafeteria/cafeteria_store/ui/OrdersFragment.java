@@ -279,7 +279,7 @@ public class OrdersFragment extends Fragment{
                     String jsonOrder = gson.toJson(readyOrder, Order.class);
                     URL url = null;
                     try {
-                        url = new URL(ApplicationConstant.UPDATE_ORDER_READY);
+                        url = new URL(ApplicationConstant.getAddress(ApplicationConstant.UPDATE_ORDER_READY));
                         HttpURLConnection con = (HttpURLConnection) url.openConnection();
                         con.setDoOutput(true);
                         con.setDoInput(true);
@@ -709,7 +709,7 @@ public class OrdersFragment extends Fragment{
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_ORDERS_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_ORDERS_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 

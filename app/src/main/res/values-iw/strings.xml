@@ -33,4 +33,21 @@
     <string name="scan_code_action">סרוק קוד QR</string>
     <!--Order Details Popup End-->
 
+    <string name="camera_permission_denied">יש צורך בהרשאת מצלמה כדי לסרוק את הברקוד</string>
+    <string name="action_exit">יציאה</string>
+
+    <!--Choose Cafeteria -->
+    <string name="choose_cafeteria_title">בחר קפיטריה</string>
+    <string name="choose_cafeteria_hint">חפש קפיטריה..</string>
+    <string name="choose_cafeteria_btn">המשך</string>
+    <string name="choose_cafeteria_toast">בחר קפיטריה</string>
+    <!--Choose Cafeteria End-->
+
+    <string name="dialog_manager_password_title">התנתק</string>
+    <string name="dialog_manager_log_in_password_title">התחבר</string>
+    <string name="dialog_manager_password_message">הכנס סיסמת מנהל</string>
+    <string name="dialog_positve">אישור</string>
+    <string name="dialog_negative">ביטול</string>
+    <string name="dialog_not_match">הסיסמא שגויה\nצור קשר עם מנהל הקפיטריה</string>
+
 </resources>

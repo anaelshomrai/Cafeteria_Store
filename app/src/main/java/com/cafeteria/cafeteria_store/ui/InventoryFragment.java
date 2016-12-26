@@ -275,7 +275,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_ITEMS_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_ITEMS_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -322,7 +322,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_EXTRAS_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_EXTRAS_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -368,7 +368,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_MAINS_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_MAINS_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -415,7 +415,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
         protected String doInBackground(String... params) {
             StringBuilder response;
             try {
-                URL url = new URL(ApplicationConstant.GET_SERVINGS_URL);
+                URL url = new URL(ApplicationConstant.getAddress(ApplicationConstant.GET_SERVINGS_URL));
                 response = new StringBuilder();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
@@ -499,7 +499,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
 
             URL url = null;
             try {
-                url = new URL(urlRequest);
+                url = new URL(ApplicationConstant.getAddress(urlRequest));
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setDoOutput(true);
                 con.setDoInput(true);

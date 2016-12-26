@@ -3,7 +3,7 @@
     <color name="colorPrimary">#D50000</color>
     <color name="colorPrimaryDark">#F44336</color>
     <color name="colorPrimaryLight">#FF5252</color>
-    <color name="colorAccent">#FFFFFF</color>
+    <!--<color name="colorAccent">#FFFFFF</color>-->
     <color name="colorHeadlines">#FFFFFF</color>
     <color name="colorBackground">#F5F7F7</color>
     <color name="colorReadyBg">#56bf5e</color>
@@ -11,5 +11,6 @@
     <color name="colorOddRow">#e2b7b7</color>
     <color name="colorSelectedRow">#d7d9dd</color>
     <color name="iconBackgroundColor">#CC2735</color>
+    <color name="colorAccent">#ff9e80</color>
 
 </resources>
