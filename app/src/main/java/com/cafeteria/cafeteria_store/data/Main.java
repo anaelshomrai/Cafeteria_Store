@@ -59,6 +59,16 @@ public class Main implements Serializable,InventoryItem {
         return inStock;
     }
 
+    @Override
+    public void setPrice(double price) {
+
+    }
+
+    @Override
+    public double getPrice() {
+        return 0;
+    }
+
     public void setInStock(boolean inStock) {
         this.inStock = inStock;
     }

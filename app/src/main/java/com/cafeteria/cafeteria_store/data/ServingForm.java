@@ -16,8 +16,6 @@ public class ServingForm  implements Serializable,InventoryItem {
 
     private boolean inStock;
 
-
-
     public int getId() {
         return id;
     }
@@ -38,6 +36,17 @@ public class ServingForm  implements Serializable,InventoryItem {
 
     public boolean isInStock() {
         return inStock;
+    }
+
+    @Override
+    public void setPrice(double price) {
+
+    }
+
+
+    @Override
+    public double getPrice() {
+        return 0;
     }
 
     public void setInStock(boolean inStock) {

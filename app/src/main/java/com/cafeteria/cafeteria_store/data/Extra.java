@@ -21,7 +21,7 @@ public class Extra  implements Serializable,InventoryItem {
     /**
      * The price of this extra.
      */
-    private Double price;
+    private double price;
 
     private boolean inStock = true;
 
@@ -61,7 +61,7 @@ public class Extra  implements Serializable,InventoryItem {
      * Returns the price of this extra
      * @return the price of this extra
      */
-    public Double getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -69,7 +69,7 @@ public class Extra  implements Serializable,InventoryItem {
      * Sets price to this extra
      * @param price
      */
-    public void setPrice(Double price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

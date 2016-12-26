@@ -453,6 +453,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
             it.setTitle(item.getTitle());
             it.setId(item.getId());
             it.setInStock(item.isInStock());
+            it.setPrice(item.getPrice());
             inventoryItems.add(it);
         }
 
@@ -461,7 +462,7 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
             it.setTitle(extra.getTitle());
             it.setId(extra.getId());
             it.setInStock(extra.isInStock());
-
+            it.setPrice(extra.getPrice());
             inventoryItems.add(extra);
         }
 
@@ -470,7 +471,6 @@ public class InventoryFragment extends Fragment implements SearchView.OnQueryTex
             it.setTitle(main.getTitle());
             it.setId(main.getId());
             it.setInStock(main.isInStock());
-
             inventoryItems.add(main);
         }
         for (ServingForm serving: servings){
